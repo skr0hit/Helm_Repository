@@ -1,4 +1,4 @@
 replicaCount: 2
 image:
-  repository: 371246242401.dkr.ecr.ap-south-1.amazonaws.com/portfolio-app
-  tag: "27"
+  repository: 646523381726.dkr.ecr.ap-south-1.amazonaws.com/app
+  tag: "v1"
