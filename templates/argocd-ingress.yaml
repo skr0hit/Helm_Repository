@@ -1,0 +1,35 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  # This Ingress will be in the 'argocd' namespace
+  namespace: argocd
+  name: argocd-server-ingress
+  annotations:
+    # Use the same annotations for the ALB controller
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+
+    # 🚨 Use the same SSL certificate ARN as your main domain
+    # This will work if your certificate is a wildcard cert (*.skrohit.info)
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-1:371246242401:certificate/6c6689ef-aa9a-485e-a4d6-420110a9058b
+
+    # Automatically redirect HTTP to HTTPS
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+
+    # IMPORTANT: The Argo CD server communicates over HTTPS
+    alb.ingress.kubernetes.io/backend-protocol: HTTPS
+spec:
+  ingressClassName: alb
+  rules:
+  - host: argocd.skrohit.info # <-- The new, dedicated subdomain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            # This must point to the Argo CD service
+            name: argocd-server
+            port:
+              # This must point to the HTTPS port on the service
+              name: https

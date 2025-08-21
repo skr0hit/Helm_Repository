@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: dev
+  name: sk-rohit-portfolio-ingress
+  annotations:
+    # --- All your annotations remain the same ---
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-1:371246242401:certificate/6c6689ef-aa9a-485e-a4d6-420110a9058b
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  tls:
+    - hosts:
+        - skrohit.info
+        - www.skrohit.info   # <--- ADD THIS LINE
+  rules:
+    # This rule handles requests for skrohit.info
+    - host: skrohit.info
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sk-rohit-portfolio-service
+                port:
+                  number: 80
+    # This new rule handles requests for www.skrohit.info
+    - host: www.skrohit.info   # <--- ADD THIS ENTIRE RULE
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sk-rohit-portfolio-service
+                port:
+                  number: 80
