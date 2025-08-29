@@ -1,4 +1,4 @@
 replicaCount: 1
 image:
   repository: 646523381726.dkr.ecr.ap-south-1.amazonaws.com/app
-  tag: "c669352"
+  tag: "34c1d97"
