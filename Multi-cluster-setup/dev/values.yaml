@@ -1,0 +1,4 @@
+replicaCount: 1
+image:
+  repository: 646523381726.dkr.ecr.ap-south-1.amazonaws.com/app
+  tag: "feature-HEAD-10"
